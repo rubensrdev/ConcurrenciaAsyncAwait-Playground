@@ -23,7 +23,7 @@ enum NetworkError: LocalizedError {
     }
 }
 
-func getImage(url: URL) async throws -> UIImage? {
+func getImage(url: URL) async throws(NetworkError) -> UIImage? {
     do {
         let (data, response) = try await URLSession.shared.data(from: url)
         guard let response = response as? HTTPURLResponse else {
@@ -39,11 +39,15 @@ func getImage(url: URL) async throws -> UIImage? {
         } else {
             throw NetworkError.status(response.statusCode)
         }
+    } catch let error as NetworkError {
+        throw error
     } catch {
-        throw NetworkError.general(error)
+        throw .general(error)
     }
 }
 
-Task {
+let task = Task {
     let image =  try await getImage(url: url!)
 }
+
+
