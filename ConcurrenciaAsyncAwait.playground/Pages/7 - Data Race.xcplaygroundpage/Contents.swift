@@ -66,7 +66,7 @@ cuentaPaca.balance
 cuentaAntonio.balance
 
 
-// Solución un DATA RACE
+// Solución para controlar DATA RACE mediante MAIN ACTOR
 
 DispatchQueue.global().async {
     Task { @MainActor in
